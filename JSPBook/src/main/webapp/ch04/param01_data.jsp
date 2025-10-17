@@ -4,11 +4,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Action Tag</title>
 </head>
 <body>
-	<!-- 프로젝트 만들고 실행하기 -->
-	<h1>Hello JSP!!</h1>
-	Hello! JSP Server Pages.
+	<p>아이디: <%= request.getParameter("id") %></p>
+	<p>이름: <%= request.getParameter("name") %></p>
 </body>
 </html>
