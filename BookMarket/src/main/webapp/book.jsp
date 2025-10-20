@@ -4,7 +4,7 @@
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<jsp:useBean id="bookDAO" class="dao.BookRepository" scope="session"/>
+<%-- <jsp:useBean id="bookDAO" class="dao.BookRepository" scope="session"/> --%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,20 +23,30 @@
     		<jsp:param value="BookInfo" name="subtitle"/>
     	</jsp:include>
     </div>
-		
+	</div>
 		<%
+			String id = request.getParameter("id");
+		
 			/* Quiz
 				도서 목록 페이지로부터 전달되는 도서 아이디를 가져와서
 				BookRePository 클래스로 bookDAO라는 이름의 자바빈을 생성하고
 				도서 아이디를 이용하여 도서 정보 가져오기*/
-				BookRepository books = new BookRepository();
-				Book book = books.getBookById(request.getParameter("id"));
+				
+				
+				// BookRepository 공유 객체로 변경
+				BookRepository dao = BookRepository.getInstance();
+				Book book = dao.getBookById(id);
 		%>
 		
 		
 		
      <div class="row align-items-md-stretch">
-      <div class="col-md-12">
+     	<div class="col-md-6">
+			<%-- 	<img alt="도서이미지" src="./resources/images/<%= book.getFilename() %>" style="width: 70%;"> --%>
+				<img alt="도서이미지" src="<%= request.getContextPath() %>/images/<%= book.getFilename() %>" style="width: 70%;">
+     	</div>
+     	
+      <div class="col-md-6">
       	<!-- Quiz: 도서 정보로 채워넣기(데이터 동적 바인딩) -->
 				<h3><b><%= book.getName() %></b></h3>
 				<p><%= book.getDescription()%></p>

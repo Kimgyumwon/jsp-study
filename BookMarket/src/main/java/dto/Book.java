@@ -119,6 +119,14 @@ public class Book implements Serializable {
 		this.filename = filename;
 	}
 
+	@Override
+	public String toString() {
+		return "Book [bookId=" + bookId + ", name=" + name + ", unitPrice=" + unitPrice + ", author=" + author
+				+ ", description=" + description + ", publisher=" + publisher + ", category=" + category
+				+ ", unitsInStock=" + unitsInStock + ", releaseDate=" + releaseDate + ", condition=" + condition
+				+ ", filename=" + filename + "]";
+	}
+
 	
 	
 }
