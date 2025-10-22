@@ -25,6 +25,5 @@
 			out.println("설정된 세션의 속성 값 [" + i + "]: " + value + "<br>");
 		}
 	%>
-		
 </body>
 </html>
