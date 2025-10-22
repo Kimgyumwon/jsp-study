@@ -4,6 +4,7 @@
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page errorPage="exceptionNoBookId.jsp" %>
 <%-- <jsp:useBean id="bookDAO" class="dao.BookRepository" scope="session"/> --%>
 <!DOCTYPE html>
 <html>
@@ -25,13 +26,12 @@
     </div>
 	</div>
 		<%
-			String id = request.getParameter("id");
 		
+			String id = request.getParameter("id");
 			/* Quiz
 				도서 목록 페이지로부터 전달되는 도서 아이디를 가져와서
 				BookRePository 클래스로 bookDAO라는 이름의 자바빈을 생성하고
 				도서 아이디를 이용하여 도서 정보 가져오기*/
-				
 				
 				// BookRepository 공유 객체로 변경
 				BookRepository dao = BookRepository.getInstance();

@@ -7,6 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
+
 	<!-- 헤더(메뉴) 영역 -->
 	<header class="pb-3 mb-4 border-bottom">
     <a href="./welcome.jsp" class="d-flex align-items-center text-dark text-decoration-none">

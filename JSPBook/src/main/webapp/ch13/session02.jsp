@@ -1,0 +1,20 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Session</title>
+</head>
+<body>
+	<!-- 세션에 저장된 속성 값 가져와 출력하기 -->
+	<%
+		String user_id = (String)session.getAttribute("userId");
+		String user_pw = (String)session.getAttribute("userPw");
+	
+		out.println("아이디: " + user_id + "<br>");
+		out.println("비밀번호: " + user_pw);
+	%>
+	<!-- 테스트: 세션 ID가 저장된 쿠기 지우고 새로고침 -->
+</body>
+</html>
