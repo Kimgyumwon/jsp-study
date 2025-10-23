@@ -1,0 +1,3 @@
+-- Active: 1758675368804@@127.0.0.1@3306@bookmarkdb
+SHOW DATABASES;
+
