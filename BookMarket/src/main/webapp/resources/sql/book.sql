@@ -1,4 +1,5 @@
-USE bookmarketdb;
+-- Active: 1758675368804@@127.0.0.1@3306@bookmarkdb
+USE bookmarkdb;
 
 CREATE TABLE IF NOT EXISTS book (
 	b_id VARCHAR(10),

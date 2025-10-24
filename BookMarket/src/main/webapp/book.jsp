@@ -1,3 +1,5 @@
+<%@page import="util.DBUtil"%>
+<%@page import="java.sql.Connection"%>
 <%@page import="dao.BookRepository"%>
 <%@page import="java.util.List"%>
 <%@page import="dto.Book"%>
@@ -34,17 +36,22 @@
     	</jsp:include>
     </div>
 	</div>
+		<%@ include file="dbconn.jsp" %>
+	
 		<%
 		
 			String id = request.getParameter("id");
-			/* Quiz
-				도서 목록 페이지로부터 전달되는 도서 아이디를 가져와서
-				BookRePository 클래스로 bookDAO라는 이름의 자바빈을 생성하고
-				도서 아이디를 이용하여 도서 정보 가져오기*/
 				
 				// BookRepository 공유 객체로 변경
-				BookRepository dao = BookRepository.getInstance();
-				Book book = dao.getBookById(id);
+				// BookRepository dao = BookRepository.getInstance();
+				// Book book = dao.getBookById(id);
+				
+				try {
+					String sql = "SELECT * FROM book WHERE b_id = ?";
+					pstmt = conn.prepareStatement(sql);
+					pstmt.setString(1, id);
+					rs = pstmt.executeQuery();
+					if(rs.next()){
 		%>
 		
 		
@@ -52,35 +59,43 @@
      <div class="row align-items-md-stretch">
      	<div class="col-md-6">
 			<%-- 	<img alt="도서이미지" src="./resources/images/<%= book.getFilename() %>" style="width: 70%;"> --%>
-				<img alt="도서이미지" src="<%= request.getContextPath() %>/images/<%= book.getFilename() %>" style="width: 70%;">
+				<img alt="도서이미지" src="<%= request.getContextPath() %>/images/<%=rs.getString("b_fileName")%>" style="width: 70%;">
      	</div>
      	
       <div class="col-md-6">
       	<!-- Quiz: 도서 정보로 채워넣기(데이터 동적 바인딩) -->
-				<h3><b><%= book.getName() %></b></h3>
-				<p><%= book.getDescription()%></p>
+				<h3><b><%= rs.getString("b_name") %></b></h3>
+				<p><%= rs.getString("b_description")%></p>
 				<p>
-					<b>도서코드</b>: <span class="badge text-bg-danger"><%=request.getParameter("id") %></span>
+					<b>도서코드</b>: <span class="badge text-bg-danger"><%=rs.getString("b_id") %></span>
 				</p>							
 				<p>
-					<b>저자</b>: <%= book.getAuthor() %>
+					<b>저자</b>: <%= rs.getString("b_author") %>
 				</p>	
-				<p><b>출판사</b>: <%= book.getPublisher()%></p>	
-				<p><b>출판일</b>: <%= book.getReleaseDate() %></p>				
-				<p><b>분류</b>: <%= book.getCategory() %></p>
-				<p><b>재고수</b>: <%= book.getUnitsInStock() %></p>
-				<h4><%= book.getUnitPrice() %> 원</h4>
+				<p><b>출판사</b>: <%=rs.getString("b_publisher")%></p>	
+				<p><b>출판일</b>: <%=rs.getString("b_releaseDate")%></p>				
+				<p><b>분류</b>: <%=rs.getString("b_category")%></p>
+				<p><b>재고수</b>: <%=rs.getInt("b_unitsInStock") %></p>
+				<h4><%=rs.getInt("b_unitPrice")%> 원</h4>
 				<p>
-					<form action="./addCart.jsp?id=<%= book.getBookId() %>" method="post" name="addForm">
-						<input type="hidden" name="bookId" value="<%= book.getBookId() %>">
+					<form action="./addCart.jsp?id=<%= rs.getString("b_id") %>" method="post" name="addForm">
+						<input type="hidden" name="bookId" value="<%= rs.getString("b_id") %>">
 						<a href="javascript:void(0)" class="btn btn-info" onclick="addToCart()">도서주문 &raquo;</a> 					
 						<a href="./cart.jsp" class="btn btn-warning">장바구니 &raquo;</a>
 						<a href="./books.jsp" class="btn btn-secondary">도서목록 &raquo;</a>					
 					</form>
 				</p>
+		
       </div>
  		</div>
- 		
+ 				<%
+						}
+					} catch (SQLException e) {
+						e.printStackTrace();
+					} finally {
+						DBUtil.close(pstmt,rs,conn);
+					}
+				%>
 		<%@ include file="footer.jsp" %>
 </body>
 </html>

@@ -1,3 +1,4 @@
+-- Active: 1758675368804@@127.0.0.1@3306@bookmarkdb
 INSERT INTO book (b_id, b_name, b_unitPrice, b_author, b_description, b_publisher, b_category, b_unitsInStock, b_releaseDate, b_condition, b_fileName)
 VALUES
 	('ISBN1234', 'C# 프로그래밍', 27000, '우재남', 'C#을 처음 접하는 독자를 대상으로 일대일 수업처럼 자세히 설명한 책이다. 꼭 알아야 할 핵심 개념은 기본 예제로 최대한 쉽게 설명했으며, 중요한 내용은 응용 예제, 퀴즈, 셀프 스터디, 예제 모음으로 한번 더 복습할 수 있다.', '한빛아카데미', 'IT모바일', 1000, '2022/10/06', 'New', 'ISBN1234.jpg'),

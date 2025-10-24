@@ -19,13 +19,13 @@ import java.sql.SQLException;
 /**
  * Servlet implementation class ProcessAddBookservlet
  */
-@WebServlet("/processAddBook")
+@WebServlet("/processUpdateBook")
 @MultipartConfig (
 	fileSizeThreshold = 1024 * 1024 * 1,
 	maxFileSize = 1024 * 1024 * 10,   
 	maxRequestSize = 1024 * 1024 * 50
 )
-public class ProcessAddBookservlet extends HttpServlet {
+public class ProcessUpdateBookservlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	/**
@@ -64,15 +64,7 @@ public class ProcessAddBookservlet extends HttpServlet {
 //			파일 이름 가져오기
         	fileName = filePart.getSubmittedFileName();
         	
-//        	업로드 폴더 경로(2가지 경로 테스트)
-//        	1) webapp 내부 경로 사용
-//        	String uploadPath = getServletContext().getRealPath("/resources/images");
-//        	장점: 내부 경로라서 리소스에 바로 접근 가능
-//        	단점: 서버 재배포 시 초기화 됨(즉, 업로드 파일 사라짐)
-//        	2) 외부 업로드 폴더 사용
         	String uploadPath = "D:/upload";
-//        	JSP 페이지에서 /images/파일명으로 바로 접근하려면 톰캣 설정을 추가해야 함
-//        	server.xml 또는 프로젝트별 context.xml 
         	
         	
         	
@@ -86,12 +78,11 @@ public class ProcessAddBookservlet extends HttpServlet {
         // 도서 등록 처리 DB 연동
         Connection conn = null;
         PreparedStatement pstmt = null;
-        
         // 공통 메소드로 커넥션 획득
         conn = DBUtil.getConnection();
         
-        String sql = "INSERT INTO book (b_id, b_name, b_unitPrice, b_author, b_description, b_publisher, b_category, b_unitsInStock, b_releaseDate, b_condition, b_fileName)"
-        		+ "VALUES(?,?,?,?,?,?,?,?,?,?,?)";
+        String sql = "UPDATE book SET b_id = ?, b_name = ?, b_unitPrice = ?, b_author = ?, b_description = ?, b_publisher = ?, b_category = ?, b_unitsInStock = ?, b_releaseDate = ?, b_condition = ?, b_fileName = IFNULL(?, b_fileName) "
+        		 	 +"WHERE b_id = ?";
         try {
         	pstmt = conn.prepareStatement(sql);
         	pstmt.setString(1, bookId);
@@ -105,6 +96,7 @@ public class ProcessAddBookservlet extends HttpServlet {
         	pstmt.setString(9, releaseDate);
         	pstmt.setString(10, condition);
         	pstmt.setString(11, fileName);
+        	pstmt.setString(12, bookId);
         	pstmt.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println("SQLException: " + e.getMessage());
@@ -112,11 +104,8 @@ public class ProcessAddBookservlet extends HttpServlet {
 			DBUtil.close(pstmt,conn);
 		}
         
-        
-     
-        
-//      등록 후 도서 목록 페이지로 리다이렉트
-        response.sendRedirect("books.jsp");
+//      수정 후 도서 편집 페이지로 리다이렉트
+        response.sendRedirect("editBook.jsp?edit=update");
 		
 	}
 

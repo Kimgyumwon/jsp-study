@@ -8,16 +8,28 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>도서 목록</title>
+<title>도서 편집</title>
  <link rel="stylesheet" href="./resources/css/bootstrap.min.css">
+ 
+ <script type="text/javascript">
+ 	function deleteConfirm(id) {
+		if (confirm('해당 도서를 삭제합니다!!')){
+			location.href = './deleteBook.jsp?id=' + id;
+		}
+	}
+ </script>
+ 
 </head>
 <body>
-
+	<!-- 도서 편집 -->
+	<%
+		String edit = request.getParameter("edit");
+	%>
 	<div class="container py-4">
 		<%@ include file="menu.jsp" %>
     <div class="p-5 mb-4 bg-body-tertiary rounded-3">
     	<jsp:include page="title.jsp">
-    		<jsp:param value="도서목록" name="title"/>
+    		<jsp:param value="도서편집" name="title"/>
     		<jsp:param value="BookList" name="subtitle"/>
     	</jsp:include>
     </div>
@@ -47,10 +59,22 @@
     					<p><%= rs.getString("b_description").substring(0,60)%>...</p>
     					<p><%= rs.getInt("b_unitPrice") %>원</p>
     					<p>
-    					<!-- 보조 기기(스크린 리더)에게 "이거 버튼처럼 동작하는 요소야"라고 알려줌 -->
-    						<a href="./book.jsp?id=	<%=rs.getString("b_id")%>" class="btn btn-secondary" role="button">
-    							상제 정보 &raquo;
-    						</a>
+    						<%
+    							if ("update".equals(edit)){
+    						%>
+									<a href="./updateBook.jsp?id=<%= rs.getString("b_id")%>" class="btn btn-success" role="button">
+										수정 &raquo;
+									</a>    						
+    						<%
+    							} else if ("delete".equals(edit)){
+    						%>
+    							<a href="javascript:void(0)" class="btn btn-danger" role="button" 
+    									onclick="deleteConfirm('<%=rs.getString("b_id")%>')">
+										삭제 &raquo;
+									</a>   
+    						<%
+    							}
+    						%>
     					</p>
     				</div>
     			</div>
@@ -67,6 +91,6 @@
  		</div>
 		<%@ include file="footer.jsp" %>
   </div>
-	
+
 </body>
 </html>
